@@ -12,6 +12,45 @@ public class LambdaMethods {
 			}
 		}, "repeat");
 		
+		//2
+		printCustomMessage((s)->{
+			for(int i = s.length()-1; i >= 0; i--) {
+				System.out.print(s.charAt(i));
+			}
+		}, "backwards");
+		
+		//3
+		System.out.println();
+		printCustomMessage((s) -> {
+			for(int i = 0; i < s.length(); i++) {
+				if(i % 2 == 0) {
+					System.out.print((s.charAt(i) + "").toLowerCase());
+				}else{
+					System.out.print((s.charAt(i) + "").toUpperCase());
+				}
+			}
+		}, "caseswap");
+		
+		//4
+		System.out.println();
+		printCustomMessage((s) -> {
+			for(int i = 0; i < s.length(); i++) {
+				System.out.print(s.charAt(i) + (i != s.length()-1 ? "." : ""));
+			} 
+		}, "periods");
+		
+		
+		//5
+		System.out.println();
+		printCustomMessage((s) -> {
+			for(int i = 0; i < s.length(); i++) {
+				if(s.charAt(i) != 'a' && s.charAt(i) != 'e' && s.charAt(i) != 'i' && s.charAt(i) != 'o' && s.charAt(i) != 'u') {
+					System.out.print(s.charAt(i));
+				}
+			}
+		}, "what are vowels?");
+		
+		
 		//2. Call the printCustonMessage method using a lambda so that the String prints backwards.
 		
 		//3. Call the printCustonMessage method using a lambda so that the String prints with a mix between upper an lower case characters.

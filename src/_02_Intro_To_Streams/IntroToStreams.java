@@ -83,15 +83,17 @@ public class IntroToStreams {
         carList.add(new Car("Ford", 60000));
         carList.add(new Car("Ferarri", 10000));
         Stream<Car> carListStream = carList.stream();
+        
 
         // Stream of 100 random (primitive) double values from 50 to 200
         DoubleStream dblStream = new Random().doubles(100, 50, 200);
+        
         
         /*
          * forEach() - Apply operation to all elements
          */
         System.out.print("Array stream forEach(): ");
-        Arrays.stream(strArr).forEach( (word) -> System.out.print(word + " ") );
+        Arrays.stream(strArr).forEach( word -> System.out.print(word + " ") );
         
         System.out.print("\nList stream forEach(): ");
         intList.stream().forEach( (i) -> System.out.print(i + " ") );
@@ -111,8 +113,7 @@ public class IntroToStreams {
          */
         System.out.println();
         System.out.println("\nList sorted alphabetically by car name: ");
-        carList.stream().sorted((car1, car2) -> car1.make.compareTo(car2.make))
-                         .forEach((car) -> System.out.print(car.make + " "));
+        carList.stream().sorted(          (car1, car2) -> car1.make.compareTo(car2.make))                  .forEach((car) -> System.out.print(car.make + " "));
         
         System.out.println();
         System.out.println("\nList sorted from highest mileage to lowest: ");
@@ -176,7 +177,7 @@ public class IntroToStreams {
         int totalCharacters = Arrays.stream(strArr)
                                     .filter( (word) -> word.length() > 3 )
                                     .map( (word) -> word.length() )
-                                    .reduce( 0, (acc, next) -> acc+ next);
+                                    .reduce( 0, (acc, next) -> acc + next);
         
         System.out.println("\nThe total number of characters for words"
                 + " longer than 3 characters is: " + totalCharacters);
