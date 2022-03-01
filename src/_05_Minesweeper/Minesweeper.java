@@ -2,6 +2,7 @@ package _05_Minesweeper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import processing.core.PApplet;
 
@@ -43,7 +44,7 @@ public class Minesweeper extends PApplet {
      */
     int cellWidth = 40;             // in pixels
     int headerHeight = cellWidth;   // height of game info header
-    int numOfMines = 10;            // total number of mines in the game
+    int numOfMines = 20;            // total number of mines in the game
     int minesFlagged = 0;           // number of mines flagged
     int cellColor = 0xBFC0BB;       // color of unrevealed cell
     
@@ -64,6 +65,9 @@ public class Minesweeper extends PApplet {
      */
     void revealAllCells() {
         
+    	Stream<Cell> s = cells.stream();
+    	s.forEach((c) -> c.revealed = true);
+    	
     }
     
     /*
@@ -76,7 +80,12 @@ public class Minesweeper extends PApplet {
      *  noneMatch() // returns true if no items in the stream match the condition
      */
     boolean checkWin() {
-        return false;
+    	
+    	Stream<Cell> s = cells.stream();
+    	s = s.filter((c) -> !c.mine && !c.revealed);
+    	
+    	
+        return s.count() == 0;
     }
     
     /*
@@ -96,7 +105,19 @@ public class Minesweeper extends PApplet {
      *        - - - -
      */
     void revealCell(Cell cell) {
-        
+        if(!cell.mine) {
+        	cell.revealed = true;
+        	if(cell.minesAround == 0) {
+        		Stream<Cell> s = getNeighbors(cell).stream();
+        		s.forEach((c) -> {
+        			if(!c.revealed) {
+	        			c.revealed = true;
+	        			revealCell(c);
+        			}
+        		});
+        		
+        	}
+        }
     }
     
     /*
@@ -111,7 +132,12 @@ public class Minesweeper extends PApplet {
      * 6. Use reduce() or sum() to count the number of 1s, i.e. mines
      */
     void setNumberOfSurroundingMines() {
-        
+        Stream<Cell> cellStream = cells.stream();
+        cellStream.forEach((cell) -> {
+        	Stream<Cell> neighborStream = getNeighbors(cell).stream();
+        	Stream<Integer> mineStream = neighborStream.map((n) -> n.mine ? 1 : 0);
+        	cell.minesAround = mineStream.reduce(0, (totalValue, currentValue) -> totalValue + currentValue);
+        });
     }
     
     @Override
